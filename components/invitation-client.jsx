@@ -2,6 +2,7 @@
 
 import { Icon } from "@iconify/react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const weddingDate = "2026-04-12T08:00:00+07:00";
@@ -137,9 +138,10 @@ function PersonCard({ imageSrc, alt, name, role, parents }) {
   );
 }
 
-export default function InvitationClient() {
+export default function InvitationClient({ mode = "invite" }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [guestName, setGuestName] = useState("Bapak/Ibu/Saudara/i");
-  const [isOpened, setIsOpened] = useState(false);
   const [musicEnabled, setMusicEnabled] = useState(false);
   const [countdown, setCountdown] = useState(emptyCountdown);
   const [activeSection, setActiveSection] = useState("home");
@@ -155,13 +157,16 @@ export default function InvitationClient() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const guest = params.get("to");
+    const guest = searchParams.get("to");
 
     if (guest) {
       const decoded = guest.replace(/\+/g, " ");
       setGuestName(decoded);
       setForm((current) => ({ ...current, name: decoded }));
+    }
+
+    if (mode !== "invite") {
+      return;
     }
 
     const savedMessages = window.localStorage.getItem("wedding-comments");
@@ -172,9 +177,13 @@ export default function InvitationClient() {
         window.localStorage.removeItem("wedding-comments");
       }
     }
-  }, []);
+  }, [mode, searchParams]);
 
   useEffect(() => {
+    if (mode !== "invite") {
+      return;
+    }
+
     setCountdown(formatCountdown(weddingDate));
 
     const timer = window.setInterval(() => {
@@ -182,13 +191,21 @@ export default function InvitationClient() {
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
+    if (mode !== "invite") {
+      return;
+    }
+
     window.localStorage.setItem("wedding-comments", JSON.stringify(messages));
-  }, [messages]);
+  }, [messages, mode]);
 
   useEffect(() => {
+    if (mode !== "invite") {
+      return;
+    }
+
     const revealElements = document.querySelectorAll("[data-reveal]");
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -221,13 +238,19 @@ export default function InvitationClient() {
       revealObserver.disconnect();
       sectionObserver.disconnect();
     };
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
+    if (mode === "invite") {
+      document.body.classList.add("invitation-open");
+    } else {
+      document.body.classList.remove("invitation-open");
+    }
+
     return () => {
       document.body.classList.remove("invitation-open");
     };
-  }, []);
+  }, [mode]);
 
   const toggleMusic = async () => {
     const player = audioRef.current;
@@ -249,19 +272,9 @@ export default function InvitationClient() {
     }
   };
 
-  const openInvitation = async () => {
-    setIsOpened(true);
-    document.body.classList.add("invitation-open");
-
-    const player = audioRef.current;
-    if (player) {
-      try {
-        await player.play();
-        setMusicEnabled(true);
-      } catch {
-        setMusicEnabled(false);
-      }
-    }
+  const openInvitation = () => {
+    const params = searchParams.toString();
+    router.push(params ? `/undangan?${params}` : "/undangan");
   };
 
   const openStoryVideo = async () => {
@@ -325,30 +338,29 @@ export default function InvitationClient() {
     window.open(url.toString(), "_blank", "noreferrer");
   };
 
+  if (mode === "welcome") {
+    return (
+      <div className="welcome-screen">
+        <div className="welcome-backdrop" aria-hidden="true">
+          <Image src="/images/bg-welcome.jpg" alt="" fill sizes="100vw" priority />
+        </div>
+        <article className="welcome-card">
+          <InvitationHeading />
+          <div className="cover-guest">
+            <small>Kepada Yth.</small>
+            <strong>{guestName}</strong>
+          </div>
+          <button type="button" className="button button-primary welcome-open-button" onClick={openInvitation}>
+            Buka Undangan
+          </button>
+        </article>
+      </div>
+    );
+  }
+
   return (
     <>
       <audio ref={audioRef} src="/reference/theme-song.mp3" loop preload="auto" />
-
-      {!isOpened && (
-        <div className="welcome-screen">
-          <div className="welcome-backdrop" aria-hidden="true">
-            <Image src="/images/Uut-Weeding.png" alt="" fill sizes="100vw" priority />
-          </div>
-          <article className="welcome-card">
-            {/* <div className="cover-photo">
-              <Image src="/images/Uut-Weeding.png" alt="Foto Uut dan Nabila" fill sizes="360px" priority />
-            </div> */}
-            <InvitationHeading />
-            <div className="cover-guest">
-              <small>Kepada Yth.</small>
-              <strong>{guestName}</strong>
-            </div>
-            <button type="button" className="button button-primary welcome-open-button" onClick={openInvitation}>
-              Buka Undangan
-            </button>
-          </article>
-        </div>
-      )}
 
       <div className="invitation-layout">
         <aside className="desktop-stage">
