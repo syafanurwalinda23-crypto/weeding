@@ -4,42 +4,22 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-const weddingDate = "2026-12-27T08:00:00+07:00";
+const weddingDate = "2026-04-12T08:00:00+07:00";
 
-const desktopSlides = [
-  {
-    src: "/images/bride-groom-their-wedding-ceremony.jpg",
-    alt: "Latar undangan",
-    caption: "Uut Kosfendi & Nabila Afira Fitri"
-  },
-  {
-    src: "/reference/groom.webp",
-    alt: "Foto pengantin pria",
-    caption: "Minggu, 27 Desember 2026"
-  },
-  {
-    src: "/reference/bride.webp",
-    alt: "Foto pengantin wanita",
-    caption: "Save our date"
-  }
-];
-
-const verses = [
-  {
-    title: "QS. Adh-Dhariyat: 49",
-    content: "Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat kebesaran Allah."
-  },
-  {
-    title: "QS. An-Najm: 45",
-    content: "Dan sesungguhnya Dialah yang menciptakan pasangan laki-laki dan perempuan."
-  }
-];
+const weddingDetails = {
+  groom: "Uut Kosfendi",
+  bride: "Nabila Afira Fitri",
+  brideLines: ["Nabila", "Afira Fitri"],
+  dateLabel: "Minggu, 12 April 2026",
+  venueTitle: "Balai Samudra, Jakarta",
+  venueAddress: "Jl. Boulevard Barat Raya, Kelapa Gading, Jakarta Utara"
+};
 
 const storyMoments = [
   {
     title: "Pertemuan Pertama",
     year: "2021",
-    description: "Kami bertemu dalam suasana yang sederhana, lalu tumbuh menjadi kisah yang selalu ingin kami jaga."
+    description: "Kami bertemu dalam suasana sederhana, lalu tumbuh menjadi kisah yang selalu ingin kami jaga."
   },
   {
     title: "Lamaran",
@@ -57,12 +37,12 @@ const events = [
   {
     label: "Akad Nikah",
     time: "08.00 WIB - selesai",
-    date: "Minggu, 27 Desember 2026"
+    date: weddingDetails.dateLabel
   },
   {
     label: "Resepsi",
     time: "11.00 WIB - 15.00 WIB",
-    date: "Minggu, 27 Desember 2026"
+    date: weddingDetails.dateLabel
   }
 ];
 
@@ -71,28 +51,15 @@ const bankAccounts = [
     bank: "BCA",
     number: "1234567890",
     name: "Nabila Afira Fitri"
-  },
-  {
-    bank: "Mandiri",
-    number: "9876543210",
-    name: "Uut Kosfendi"
   }
 ];
 
-const emptyCountdown = {
-  days: 0,
-  hours: 0,
-  minutes: 0,
-  seconds: 0,
-  finished: false
-};
-
 const navItems = [
-  { id: "home", label: "Home", short: "Home" },
-  { id: "couple", label: "Mempelai", short: "Couple" },
-  { id: "story", label: "Story", short: "Story" },
-  { id: "event", label: "Acara", short: "Acara" },
-  { id: "comment", label: "Ucapan", short: "Ucapan" }
+  { id: "home", short: "Home" },
+  { id: "couple", short: "Couple" },
+  { id: "story", short: "Story" },
+  { id: "event", short: "Acara" },
+  { id: "comment", short: "Ucapan" }
 ];
 
 const initialMessages = [
@@ -110,6 +77,14 @@ const initialMessages = [
   }
 ];
 
+const emptyCountdown = {
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+  finished: false
+};
+
 function formatCountdown(target) {
   const diff = new Date(target).getTime() - Date.now();
 
@@ -126,51 +101,39 @@ function formatCountdown(target) {
   };
 }
 
-function Wave({ inverted = false }) {
+function InvitationHeading() {
   return (
-    <div className={`wave-wrap${inverted ? " inverted" : ""}`}>
-      <svg viewBox="0 0 1440 320" aria-hidden="true" className="wave-shape">
-        <path
-          fill="currentColor"
-          d="M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,165.3C672,160,768,96,864,96C960,96,1056,160,1152,154.7C1248,149,1344,75,1392,37.3L1440,0L1440,320L0,320Z"
-        />
-      </svg>
-    </div>
-  );
-}
-
-function HeartCluster() {
-  return (
-    <div className="heart-cluster" aria-hidden="true">
-      <span />
-      <span />
-      <span />
-    </div>
-  );
-}
-
-function ClassicInvitationHeading() {
-  return (
-    <>
-      <span className="eyebrow home-eyebrow">Undangan Pernikahan</span>
-      <h1 className="script-heading home-title">
-        <span className="home-name-line">Uut Kosfendi</span>
-        {/* <span className="home-divider" aria-hidden="true">
-          <span className="home-divider-line" />
-          <span className="home-divider-badge">&amp;</span>
-          <span className="home-divider-line" />
-        </span> */}
-          <span className="home-divider-line" />
-                  <span className="home-divider-badge">&amp;</span>
-          <span className="home-divider-line" />
-
-        <span className="home-name-line">
-          <span>Nabila</span>
-          <span>Afira Fitri</span>
+    <div className="invitation-heading">
+      <span className="eyebrow">Undangan Pernikahan</span>
+      <h1 className="script-heading invitation-title">
+        <span className="invitation-name">{weddingDetails.groom}</span>
+        <span className="invitation-divider" aria-hidden="true">
+          <span className="invitation-divider-line" />
+          <span className="invitation-divider-badge">&amp;</span>
+          <span className="invitation-divider-line" />
+        </span>
+        <span className="invitation-name invitation-name-bottom">
+          {weddingDetails.brideLines.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
         </span>
       </h1>
-      <p className="hero-date home-date">Minggu, 12 April 2026</p>
-    </>
+      <p className="invitation-date">{weddingDetails.dateLabel}</p>
+    </div>
+  );
+}
+
+function PersonCard({ imageSrc, alt, name, role, parents }) {
+  return (
+    <article className="person-card" data-reveal>
+      <div className="person-photo">
+        <Image src={imageSrc} alt={alt} fill sizes="220px" />
+      </div>
+      <p className="section-kicker">{role}</p>
+      <h3>{name}</h3>
+      <p>{parents[0]}</p>
+      <p>dan {parents[1]}</p>
+    </article>
   );
 }
 
@@ -178,7 +141,6 @@ export default function InvitationClient() {
   const [guestName, setGuestName] = useState("Bapak/Ibu/Saudara/i");
   const [isOpened, setIsOpened] = useState(false);
   const [musicEnabled, setMusicEnabled] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [countdown, setCountdown] = useState(emptyCountdown);
   const [activeSection, setActiveSection] = useState("home");
   const [storyOpen, setStoryOpen] = useState(false);
@@ -227,14 +189,6 @@ export default function InvitationClient() {
   }, [messages]);
 
   useEffect(() => {
-    const slider = window.setInterval(() => {
-      setCurrentSlide((current) => (current + 1) % desktopSlides.length);
-    }, 5500);
-
-    return () => window.clearInterval(slider);
-  }, []);
-
-  useEffect(() => {
     const revealElements = document.querySelectorAll("[data-reveal]");
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -244,7 +198,7 @@ export default function InvitationClient() {
           }
         });
       },
-      { threshold: 0.18 }
+      { threshold: 0.16 }
     );
 
     revealElements.forEach((element) => revealObserver.observe(element));
@@ -258,7 +212,7 @@ export default function InvitationClient() {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.45 }
     );
 
     sections.forEach((section) => sectionObserver.observe(section));
@@ -357,15 +311,15 @@ export default function InvitationClient() {
   };
 
   const openCalendar = () => {
-    const start = "20261227T010000Z";
-    const end = "20261227T080000Z";
+    const start = "20260412T010000Z";
+    const end = "20260412T080000Z";
     const url = new URL("https://calendar.google.com/calendar/render");
     url.search = new URLSearchParams({
       action: "TEMPLATE",
-      text: "The Wedding of Uut Kosfendi & Nabila Afira Fitri",
+      text: `The Wedding of ${weddingDetails.groom} & ${weddingDetails.bride}`,
       dates: `${start}/${end}`,
-      details: "Undangan pernikahan Uut Kosfendi dan Nabila Afira Fitri.",
-      location: "Balai Samudra, Jakarta"
+      details: `Undangan pernikahan ${weddingDetails.groom} dan ${weddingDetails.bride}.`,
+      location: weddingDetails.venueTitle
     }).toString();
 
     window.open(url.toString(), "_blank", "noreferrer");
@@ -377,183 +331,158 @@ export default function InvitationClient() {
 
       {!isOpened && (
         <div className="welcome-screen">
-          <div className="welcome-card">
-            <div className="welcome-card-frame">
-              <div className="welcome-photo">
-                <Image
-                  src="/images/Uut-Weeding.png"
-                  alt="Foto Uut dan Nabila"
-                  fill
-                  sizes="320px"
-                  priority
-                />
-              </div>
-              <ClassicInvitationHeading />
-              <div className="welcome-guest">
-                <small>Kepada Yth.</small>
-                <strong>{guestName}</strong>
-              </div>
-              <button type="button" className="button button-primary" onClick={openInvitation}>
-                Buka Undangan
-              </button>
-            </div>
+          <div className="welcome-backdrop" aria-hidden="true">
+            <Image src="/images/Uut-Weeding.png" alt="" fill sizes="100vw" priority />
           </div>
+          <article className="welcome-card">
+            {/* <div className="cover-photo">
+              <Image src="/images/Uut-Weeding.png" alt="Foto Uut dan Nabila" fill sizes="360px" priority />
+            </div> */}
+            <InvitationHeading />
+            <div className="cover-guest">
+              <small>Kepada Yth.</small>
+              <strong>{guestName}</strong>
+            </div>
+            <button type="button" className="button button-primary welcome-open-button" onClick={openInvitation}>
+              Buka Undangan
+            </button>
+          </article>
         </div>
       )}
 
       <div className="invitation-layout">
         <aside className="desktop-stage">
-          {desktopSlides.map((slide, index) => (
-            <div
-              key={slide.src}
-              className={`desktop-slide${index === currentSlide ? " active" : ""}`}
-            >
-              <Image src={slide.src} alt={slide.alt} fill sizes="60vw" priority={index === 0} />
+          <article className="desktop-card">
+            <div className="desktop-photo">
+              <Image src="/images/Uut-Weeding.png" alt="Foto Uut dan Nabila" fill sizes="420px" priority />
             </div>
-          ))}
-          <div className="desktop-stage-overlay" />
-          <div className="desktop-stage-copy" data-reveal>
-            <span className="eyebrow">Undangan Pernikahan</span>
-            <h2>Uut Kosfendi & Nabila Afira Fitri</h2>
-            <p>27 Desember 2026</p>
-            <small>{desktopSlides[currentSlide].caption}</small>
-          </div>
+            <InvitationHeading />
+            <div className="summary-list">
+              <div className="summary-item">
+                <span>Tamu</span>
+                <strong>{guestName}</strong>
+              </div>
+              <div className="summary-item">
+                <span>Lokasi</span>
+                <strong>{weddingDetails.venueTitle}</strong>
+              </div>
+            </div>
+            <div className="desktop-actions">
+              <button type="button" className="button button-primary" onClick={openCalendar}>
+                Save Calendar
+              </button>
+              <button type="button" className="button button-secondary" onClick={toggleMusic}>
+                {musicEnabled ? "Matikan Musik" : "Putar Musik"}
+              </button>
+            </div>
+          </article>
         </aside>
 
         <div className="phone-column">
           <div className="phone-shell">
             <main className="phone-content">
-              <section className="section home-section" id="home" data-section>
-                <div className="home-bg">
-                  <Image
-                    src="/images/bride-groom-their-wedding-ceremony.jpg"
-                    alt="Background home"
-                    fill
-                    sizes="420px"
-                    priority
-                  />
-                </div>
-                <div className="hero-glow hero-glow-left" />
-                <div className="hero-glow hero-glow-right" />
-                <div className="section-inner home-inner">
-                  <div className="home-card-frame">
-                    <ClassicInvitationHeading />
-                    <button
-                      type="button"
-                      className="button button-ghost hero-calendar-button"
-                      onClick={openCalendar}
-                    >
-                      Save Google Calendar
+              <section className="section" id="home" data-section>
+                <article className="surface-card hero-card" data-reveal>
+                  <div className="hero-photo">
+                    <Image src="/images/Uut-Weeding.png" alt="Foto Uut dan Nabila" fill sizes="360px" priority />
+                  </div>
+                  <InvitationHeading />
+                  {/* <div className="hero-meta">
+                    <span className="meta-pill">Save the date</span>
+                    <span className="meta-pill">{weddingDetails.venueTitle}</span>
+                  </div> */}
+                  <div className="hero-actions">
+                    <button type="button" className="button button-primary" onClick={openCalendar}>
+                      Save Calendar
                     </button>
+                    <a href="#event" className="button button-secondary">
+                      Lihat Acara
+                    </a>
                   </div>
-                  <div className="scroll-cue">
-                    <div className="scroll-mouse">
-                      <div className="scroll-dot" />
-                    </div>
-                    <span className="scroll-label">Scroll Down</span>
-                  </div>
-                </div>
+                </article>
               </section>
 
-              <Wave />
-
-              <section className="section panel-section" id="couple" data-section>
-                <div className="section-inner text-center">
-                  <p className="arabic-text">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
-                  <h2 className="script-heading section-title">Assalamualaikum Warahmatullahi Wabarakatuh</h2>
-                  <p className="section-copy">
-                    Dengan memohon rahmat dan ridho Allah SWT, kami mengundang <strong>{guestName}</strong>{" "}
-                    untuk hadir dalam acara pernikahan kami.
-                  </p>
-
-                  <div className="couple-stack">
-                    <article className="couple-card reveal-right" data-reveal>
-                      <HeartCluster />
-                      <div className="portrait-frame">
-                        <Image src="/reference/groom.webp" alt="Pengantin pria" fill sizes="220px" />
-                      </div>
-                      <h3>Uut Kosfendi</h3>
-                      <p className="couple-role">Putra pertama</p>
-                      <p className="couple-parent">Bapak Ahmad Prasetyo</p>
-                      <p className="couple-parent">dan Ibu Siti Rahma</p>
-                    </article>
-
-                    <div className="ampersand">&amp;</div>
-
-                    <article className="couple-card reveal-left" data-reveal>
-                      <HeartCluster />
-                      <div className="portrait-frame">
-                        <Image src="/reference/bride.webp" alt="Pengantin wanita" fill sizes="220px" />
-                      </div>
-                      <h3>Nabila Afira Fitri</h3>
-                      <p className="couple-role">Putri kedua</p>
-                      <p className="couple-parent">Bapak Mulyono</p>
-                      <p className="couple-parent">dan Ibu Nurhayati</p>
-                    </article>
+              <section className="section" id="couple" data-section>
+                <article className="surface-card" data-reveal>
+                  <div className="section-head">
+                    <span className="section-kicker">Mempelai</span>
+                    <h2 className="section-title">Assalamualaikum Warahmatullahi Wabarakatuh</h2>
+                    <p className="section-copy">
+                      Dengan memohon rahmat dan ridho Allah SWT, kami mengundang <strong>{guestName}</strong> untuk
+                      hadir dalam acara pernikahan kami.
+                    </p>
                   </div>
-                </div>
+                  <div className="couple-grid">
+                    <PersonCard
+                      imageSrc="/reference/groom.webp"
+                      alt="Pengantin pria"
+                      name={weddingDetails.groom}
+                      role="Putra pertama"
+                      parents={["Bapak Ahmad Prasetyo", "Ibu Siti Rahma"]}
+                    />
+                    <PersonCard
+                      imageSrc="/reference/bride.webp"
+                      alt="Pengantin wanita"
+                      name={weddingDetails.bride}
+                      role="Putri kedua"
+                      parents={["Bapak Mulyono", "Ibu Nurhayati"]}
+                    />
+                  </div>
+                </article>
               </section>
 
-              <Wave inverted />
+              {/* <section className="section" id="story" data-section>
+                <article className="surface-card" data-reveal>
+                  <div className="section-head">
+                    <span className="section-kicker">Story</span>
+                    <h2 className="section-title">Kisah Cinta</h2>
+                    <p className="section-copy">Perjalanan singkat kami menuju hari bahagia.</p>
+                  </div>
 
-              {/* <section className="section soft-section" id="verse" data-section>
-                <div className="section-inner">
-                  <h2 className="script-heading section-title text-center">Firman Allah</h2>
-                  <div className="verse-grid">
-                    {verses.map((verse) => (
-                      <article key={verse.title} className="verse-card reveal-up" data-reveal>
-                        <p>{verse.content}</p>
-                        <strong>{verse.title}</strong>
+                  <div className="story-video">
+                    {!storyOpen && (
+                      <button type="button" className="story-overlay" onClick={openStoryVideo}>
+                        <span>Lihat Story</span>
+                      </button>
+                    )}
+                    <video
+                      ref={videoRef}
+                      src="/reference/story.mp4"
+                      className="story-media"
+                      controls
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                    />
+                  </div>
+
+                  <div className="story-timeline">
+                    {storyMoments.map((item, index) => (
+                      <article key={item.title} className="timeline-item" data-reveal>
+                        <div className="timeline-marker">{index + 1}</div>
+                        <div className="timeline-body">
+                          <small>{item.year}</small>
+                          <h3>{item.title}</h3>
+                          <p>{item.description}</p>
+                        </div>
                       </article>
                     ))}
                   </div>
-                </div>
+                </article>
               </section> */}
 
-              <section className="section soft-section" id="story" data-section>
-                <div className="section-inner">
-                  <div className="story-panel">
-                    <h2 className="script-heading section-title text-center">Kisah Cinta</h2>
-                    <div className="story-video reveal-up" data-reveal>
-                      {!storyOpen && (
-                        <button type="button" className="story-overlay" onClick={openStoryVideo}>
-                          <span>Lihat Story</span>
-                        </button>
-                      )}
-                      <video
-                        ref={videoRef}
-                        src="/reference/story.mp4"
-                        className="story-media"
-                        controls
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                      />
-                    </div>
-
-                    <div className="story-timeline">
-                      {storyMoments.map((item, index) => (
-                        <article key={item.title} className="timeline-item reveal-up" data-reveal>
-                          <div className="timeline-marker">{index + 1}</div>
-                          <div className="timeline-body">
-                            <small>{item.year}</small>
-                            <h3>{item.title}</h3>
-                            <p>{item.description}</p>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
+              <section className="section" id="event" data-section>
+                <article className="surface-card" data-reveal>
+                  <div className="section-head">
+                    <span className="section-kicker">Acara</span>
+                    <h2 className="section-title">Save The Date</h2>
+                    <p className="section-copy">Catat tanggalnya dan pilih cara termudah untuk hadir di hari bahagia kami.</p>
                   </div>
-                </div>
-              </section>
 
-              <section className="section panel-section" id="event" data-section>
-                <div className="section-inner">
-                  <h2 className="script-heading section-title text-center">Save The Date</h2>
                   <div className="countdown-grid">
                     {["days", "hours", "minutes", "seconds"].map((key) => (
-                      <article key={key} className="countdown-card reveal-up" data-reveal>
+                      <article key={key} className="countdown-card">
                         <strong>{countdown?.[key] ?? 0}</strong>
                         <span>
                           {key === "days"
@@ -570,182 +499,178 @@ export default function InvitationClient() {
 
                   <div className="event-grid">
                     {events.map((event) => (
-                      <article key={event.label} className="event-card reveal-up" data-reveal>
-                        <h3>{event.label}</h3>
-                        <p>{event.date}</p>
+                      <article key={event.label} className="event-card">
+                        <p className="section-kicker">{event.label}</p>
+                        <h3>{event.date}</h3>
                         <strong>{event.time}</strong>
-                        
                       </article>
                     ))}
                   </div>
 
-                  <div className="venue-card reveal-up" data-reveal>
-                    <h3>Balai Samudra, Jakarta</h3>
-                    <p>Jl. Boulevard Barat Raya, Kelapa Gading, Jakarta Utara</p>
+                  <div className="venue-card">
+                    <div>
+                      <p className="section-kicker">Lokasi</p>
+                      <h3>{weddingDetails.venueTitle}</h3>
+                      <p>{weddingDetails.venueAddress}</p>
+                    </div>
                     <a
                       href="https://maps.google.com/?q=Balai+Samudra+Jakarta"
                       target="_blank"
                       rel="noreferrer"
-                      className="button button-ghost button-inline"
+                      className="button button-secondary button-inline"
                     >
                       Buka Google Maps
                     </a>
                   </div>
-                </div>
+
+                  <div className="map-card">
+                    <iframe
+                      title="Lokasi acara"
+                      src="https://www.google.com/maps?q=Balai%20Samudra%20Jakarta&z=15&output=embed"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                </article>
               </section>
 
-              <section className="section soft-section" id="gift" data-section>
-                <div className="section-inner">
-                  <h2 className="script-heading section-title text-center">Love Gift</h2>
-                  <p className="section-copy text-center">
-                    Jika berhalangan hadir dan ingin mengirim tanda kasih, Anda dapat menggunakan rekening atau
-                    QR sample berikut.
-                  </p>
+              <section className="section" id="gift" data-section>
+                <article className="surface-card" data-reveal>
+                  <div className="section-head">
+                    <span className="section-kicker">Gift</span>
+                    <h2 className="section-title">Love Gift</h2>
+                    <p className="section-copy">
+                      Jika berhalangan hadir dan ingin mengirim tanda kasih, Anda dapat menggunakan rekening berikut.
+                    </p>
+                  </div>
 
                   <div className="gift-stack">
-                    <article className="gift-card reveal-up" data-reveal>
-                      <p className="gift-heading">Transfer</p>
-                      {bankAccounts.slice(0, 1).map((account) => (
-                        <div key={account.number} className="bank-card">
-                          <div>
-                            <small>{account.bank}</small>
-                            <strong>{account.number}</strong>
-                            <p>a.n. {account.name}</p>
-                          </div>
-                          <button
-                            type="button"
-                            className="button button-copy"
-                            onClick={() => copyText(account.number)}
-                          >
-                            Copy
-                          </button>
+                    {bankAccounts.map((account) => (
+                      <article key={account.number} className="gift-card">
+                        <div>
+                          <p className="section-kicker">{account.bank}</p>
+                          <strong>{account.number}</strong>
+                          <p>a.n. {account.name}</p>
                         </div>
-                      ))}
-                    </article>
-
-                    {/* <article className="gift-card reveal-up" data-reveal>
-                      <p className="gift-heading">QR / Gift</p>
-                      <div className="gift-qr">
-                        <Image src="/reference/gift-qr.png" alt="QR sample gift" fill sizes="250px" />
-                      </div>
-                      <button
-                        type="button"
-                        className="button button-ghost button-inline"
-                        onClick={() => copyText("QRIS SAMPLE - GANTI DENGAN QR ASLI")}
-                      >
-                        Copy Keterangan QR
-                      </button>
-                    </article> */}
-                  </div>
-                </div>
-              </section>
-
-              <section className="section panel-section" id="comment" data-section>
-                <div className="section-inner">
-                  <div className="comment-panel">
-                    <h2 className="script-heading section-title text-center">Ucapan &amp; Doa</h2>
-                    <div className="info-banner">
-                      <strong>Bestie note</strong>
-                      <p>Versi saat ini masih demo lokal. Ucapan tersimpan di browser yang sama.</p>
-                    </div>
-
-                    <form className="comment-form" onSubmit={handleSubmit}>
-                      <label>
-                        Nama
-                        <input
-                          type="text"
-                          placeholder="Isikan nama Anda"
-                          value={form.name}
-                          onChange={(event) =>
-                            setForm((current) => ({
-                              ...current,
-                              name: event.target.value
-                            }))
-                          }
-                        />
-                      </label>
-
-                      <label>
-                        Kehadiran
-                        <select
-                          value={form.attendance}
-                          onChange={(event) =>
-                            setForm((current) => ({
-                              ...current,
-                              attendance: event.target.value
-                            }))
-                          }
+                        <button
+                          type="button"
+                          className="button button-secondary copy-icon-button"
+                          onClick={() => copyText(account.number)}
+                          aria-label={`Copy rekening ${account.bank}`}
                         >
-                          <option value="Hadir">Hadir</option>
-                          <option value="Berhalangan">Berhalangan</option>
-                        </select>
-                      </label>
-
-                      <label>
-                        Ucapan &amp; Doa
-                        <textarea
-                          rows="4"
-                          placeholder="Tulis ucapan terbaik untuk kedua mempelai"
-                          value={form.message}
-                          onChange={(event) =>
-                            setForm((current) => ({
-                              ...current,
-                              message: event.target.value
-                            }))
-                          }
-                        />
-                      </label>
-
-                      <button type="submit" className="button button-primary button-full">
-                        Kirim Ucapan
-                      </button>
-                    </form>
-
-                    <div className="comment-list">
-                      {messages.map((item, index) => (
-                        <article key={`${item.name}-${index}`} className="comment-card">
-                          <div className="comment-meta">
-                            <div>
-                              <strong>{item.name}</strong>
-                              <small>{item.createdAt}</small>
-                            </div>
-                            <span>{item.attendance}</span>
-                          </div>
-                          <p>{item.message}</p>
-                        </article>
-                      ))}
-                    </div>
+                          <Icon icon="solar:copy-bold" aria-hidden="true" />
+                        </button>
+                      </article>
+                    ))}
                   </div>
-                </div>
+                </article>
               </section>
 
-              <footer className="page-footer">
-                <div className="footer-sound-wrap">
-                  <button
-                    type="button"
-                    className={`footer-sound-button${musicEnabled ? " active" : ""}`}
-                    onClick={toggleMusic}
-                    aria-label={musicEnabled ? "Matikan musik" : "Putar musik"}
-                  >
-                    <Icon
-                      icon={musicEnabled ? "solar:volume-loud-bold" : "solar:volume-cross-bold"}
-                      className="sound-iconify"
-                      aria-hidden="true"
-                    />
-                  </button>
-                </div>
+              <section className="section" id="comment" data-section>
+                <article className="surface-card" data-reveal>
+                  <div className="section-head">
+                    <span className="section-kicker">Ucapan</span>
+                    <h2 className="section-title">Ucapan &amp; Doa</h2>
+                    <p className="section-copy">Silakan kirim ucapan dan konfirmasi kehadiran Anda.</p>
+                  </div>
+
+                  <div className="info-banner">
+                    <strong>Catatan</strong>
+                    <p>Ucapan saat ini tersimpan lokal di browser yang sama.</p>
+                  </div>
+
+                  <form className="comment-form" onSubmit={handleSubmit}>
+                    <label>
+                      Nama
+                      <input
+                        type="text"
+                        placeholder="Isikan nama Anda"
+                        value={form.name}
+                        onChange={(event) =>
+                          setForm((current) => ({
+                            ...current,
+                            name: event.target.value
+                          }))
+                        }
+                      />
+                    </label>
+
+                    <label>
+                      Kehadiran
+                      <select
+                        value={form.attendance}
+                        onChange={(event) =>
+                          setForm((current) => ({
+                            ...current,
+                            attendance: event.target.value
+                          }))
+                        }
+                      >
+                        <option value="Hadir">Hadir</option>
+                        <option value="Berhalangan">Berhalangan</option>
+                      </select>
+                    </label>
+
+                    <label>
+                      Ucapan &amp; Doa
+                      <textarea
+                        rows="4"
+                        placeholder="Tulis ucapan terbaik untuk kedua mempelai"
+                        value={form.message}
+                        onChange={(event) =>
+                          setForm((current) => ({
+                            ...current,
+                            message: event.target.value
+                          }))
+                        }
+                      />
+                    </label>
+
+                    <button type="submit" className="button button-primary button-full">
+                      Kirim Ucapan
+                    </button>
+                  </form>
+
+                  <div className="comment-list">
+                    {messages.map((item, index) => (
+                      <article key={`${item.name}-${index}`} className="comment-card">
+                        <div className="comment-meta">
+                          <div>
+                            <strong>{item.name}</strong>
+                            <small>{item.createdAt}</small>
+                          </div>
+                          <span>{item.attendance}</span>
+                        </div>
+                        <p>{item.message}</p>
+                      </article>
+                    ))}
+                  </div>
+                </article>
+              </section>
+
+              <footer className="surface-card page-footer">
                 <p>Terima kasih atas doa dan kehadiran Anda.</p>
-                <strong>Uut Kosfendi &amp; Nabila Afira Fitri</strong>
+                <strong>
+                  {weddingDetails.groom} &amp; {weddingDetails.bride}
+                </strong>
+                <button
+                  type="button"
+                  className={`footer-sound-button${musicEnabled ? " active" : ""}`}
+                  onClick={toggleMusic}
+                  aria-label={musicEnabled ? "Matikan musik" : "Putar musik"}
+                >
+                  <Icon
+                    icon={musicEnabled ? "solar:volume-loud-bold" : "solar:volume-cross-bold"}
+                    className="sound-iconify"
+                    aria-hidden="true"
+                  />
+                </button>
               </footer>
             </main>
 
             <nav className="bottom-nav">
               {navItems.map((item) => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className={activeSection === item.id ? "active" : ""}
-                >
+                <a key={item.id} href={`#${item.id}`} className={activeSection === item.id ? "active" : ""}>
                   <span className="nav-indicator" />
                   <span className="nav-label">{item.short}</span>
                 </a>
