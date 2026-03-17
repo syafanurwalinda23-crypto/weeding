@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from "react";
 const weddingDate = "2026-04-12T08:00:00+07:00";
 
 const weddingDetails = {
-  groom: "Uut Kosfendi",
-  bride: "Nabila Afira Fitri",
-  brideLines: ["Nabila", "Afira Fitri"],
+  groom: "Uut kusfendi ",
+  bride: "Nabila Avira Fitri",
+  brideLines: ["Nabila", "Avira Fitri"],
   dateLabel: "Minggu, 12 April 2026",
   venueTitle: "Balai Samudra, Jakarta",
   venueAddress: "Jl. Boulevard Barat Raya, Kelapa Gading, Jakarta Utara"
@@ -51,7 +51,7 @@ const bankAccounts = [
   {
     bank: "BCA",
     number: "1234567890",
-    name: "Nabila Afira Fitri"
+    name: "Nabila Avira Fitri"
   }
 ];
 
