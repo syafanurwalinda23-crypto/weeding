@@ -379,6 +379,15 @@ export default function InvitationClient() {
         <div className="welcome-screen">
           <div className="welcome-card">
             <div className="welcome-card-frame">
+              <div className="welcome-photo">
+                <Image
+                  src="/images/Uut-Weeding.png"
+                  alt="Foto Uut dan Nabila"
+                  fill
+                  sizes="320px"
+                  priority
+                />
+              </div>
               <ClassicInvitationHeading />
               <div className="welcome-guest">
                 <small>Kepada Yth.</small>
