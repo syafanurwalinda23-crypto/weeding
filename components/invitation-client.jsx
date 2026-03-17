@@ -10,7 +10,7 @@ const desktopSlides = [
   {
     src: "/images/bride-groom-their-wedding-ceremony.jpg",
     alt: "Latar undangan",
-    caption: "Uut Novendi & Nabila Afira Fitri"
+    caption: "Uut Kosfendi & Nabila Afira Fitri"
   },
   {
     src: "/reference/groom.webp",
@@ -70,12 +70,12 @@ const bankAccounts = [
   {
     bank: "BCA",
     number: "1234567890",
-    name: "Aulia Putri"
+    name: "Nabila Afira Fitri"
   },
   {
     bank: "Mandiri",
     number: "9876543210",
-    name: "Uut Novendi Ramadhan"
+    name: "Uut Kosfendi"
   }
 ];
 
@@ -146,6 +146,31 @@ function HeartCluster() {
       <span />
       <span />
     </div>
+  );
+}
+
+function ClassicInvitationHeading() {
+  return (
+    <>
+      <span className="eyebrow home-eyebrow">Undangan Pernikahan</span>
+      <h1 className="script-heading home-title">
+        <span className="home-name-line">Uut Kosfendi</span>
+        {/* <span className="home-divider" aria-hidden="true">
+          <span className="home-divider-line" />
+          <span className="home-divider-badge">&amp;</span>
+          <span className="home-divider-line" />
+        </span> */}
+          <span className="home-divider-line" />
+                  <span className="home-divider-badge">&amp;</span>
+          <span className="home-divider-line" />
+
+        <span className="home-name-line">
+          <span>Nabila</span>
+          <span>Afira Fitri</span>
+        </span>
+      </h1>
+      <p className="hero-date home-date">Minggu, 12 April 2026</p>
+    </>
   );
 }
 
@@ -337,9 +362,9 @@ export default function InvitationClient() {
     const url = new URL("https://calendar.google.com/calendar/render");
     url.search = new URLSearchParams({
       action: "TEMPLATE",
-      text: "The Wedding of Uut Novendi & Aulia",
+      text: "The Wedding of Uut Kosfendi & Nabila Afira Fitri",
       dates: `${start}/${end}`,
-      details: "Undangan pernikahan Uut Novendi dan Aulia.",
+      details: "Undangan pernikahan Uut Kosfendi dan Nabila Afira Fitri.",
       location: "Balai Samudra, Jakarta"
     }).toString();
 
@@ -353,33 +378,16 @@ export default function InvitationClient() {
       {!isOpened && (
         <div className="welcome-screen">
           <div className="welcome-card">
-            <span className="welcome-kicker">The Wedding Of</span>
-            <div className="welcome-avatar">
-              <Image
-                src="/images/bride-groom-their-wedding-ceremony.jpg"
-                alt="Cover pengantin"
-                fill
-                sizes="240px"
-                priority
-              />
+            <div className="welcome-card-frame">
+              <ClassicInvitationHeading />
+              <div className="welcome-guest">
+                <small>Kepada Yth.</small>
+                <strong>{guestName}</strong>
+              </div>
+              <button type="button" className="button button-primary" onClick={openInvitation}>
+                Buka Undangan
+              </button>
             </div>
-            <h1 className="welcome-couple">
-              <span className="welcome-person">Uut Novendi</span>
-              <span className="welcome-separator" aria-hidden="true">
-                <span className="welcome-separator-line" />
-                <span className="welcome-separator-badge">&amp;</span>
-                <span className="welcome-separator-line" />
-              </span>
-              <span className="welcome-person welcome-person-secondary">Nabila Afira Fitri</span>
-            </h1>
-            <p>Minggu, 27 Desember 2026</p>
-            <div className="welcome-guest">
-              <small>Kepada Yth.</small>
-              <strong>{guestName}</strong>
-            </div>
-            <button type="button" className="button button-primary" onClick={openInvitation}>
-              Buka Undangan
-            </button>
           </div>
         </div>
       )}
@@ -397,7 +405,7 @@ export default function InvitationClient() {
           <div className="desktop-stage-overlay" />
           <div className="desktop-stage-copy" data-reveal>
             <span className="eyebrow">Undangan Pernikahan</span>
-            <h2>Uut Novendi & Nabila Afira Fitri</h2>
+            <h2>Uut Kosfendi & Nabila Afira Fitri</h2>
             <p>27 Desember 2026</p>
             <small>{desktopSlides[currentSlide].caption}</small>
           </div>
@@ -419,20 +427,16 @@ export default function InvitationClient() {
                 <div className="hero-glow hero-glow-left" />
                 <div className="hero-glow hero-glow-right" />
                 <div className="section-inner home-inner">
-                  <span className="eyebrow home-eyebrow">Undangan Pernikahan</span>
-                  <h1 className="script-heading home-title">
-                    <span className="home-name-line home-name-top">Uut Novendi</span>
-                    <span className="home-ampersand">&amp;</span>
-                    <span className="home-name-line home-name-bottom">Nabila Afira Fitri</span>
-                  </h1>
-                  <p className="hero-date home-date">Minggu, 27 Desember 2026</p>
-                  <button
-                    type="button"
-                    className="button button-ghost hero-calendar-button"
-                    onClick={openCalendar}
-                  >
-                    Save Google Calendar
-                  </button>
+                  <div className="home-card-frame">
+                    <ClassicInvitationHeading />
+                    <button
+                      type="button"
+                      className="button button-ghost hero-calendar-button"
+                      onClick={openCalendar}
+                    >
+                      Save Google Calendar
+                    </button>
+                  </div>
                   <div className="scroll-cue">
                     <div className="scroll-mouse">
                       <div className="scroll-dot" />
@@ -459,7 +463,7 @@ export default function InvitationClient() {
                       <div className="portrait-frame">
                         <Image src="/reference/groom.webp" alt="Pengantin pria" fill sizes="220px" />
                       </div>
-                      <h3>Uut Novendi Ramadhan</h3>
+                      <h3>Uut Kosfendi</h3>
                       <p className="couple-role">Putra pertama</p>
                       <p className="couple-parent">Bapak Ahmad Prasetyo</p>
                       <p className="couple-parent">dan Ibu Siti Rahma</p>
@@ -472,7 +476,7 @@ export default function InvitationClient() {
                       <div className="portrait-frame">
                         <Image src="/reference/bride.webp" alt="Pengantin wanita" fill sizes="220px" />
                       </div>
-                      <h3>Aulia Putri</h3>
+                      <h3>Nabila Afira Fitri</h3>
                       <p className="couple-role">Putri kedua</p>
                       <p className="couple-parent">Bapak Mulyono</p>
                       <p className="couple-parent">dan Ibu Nurhayati</p>
@@ -483,7 +487,7 @@ export default function InvitationClient() {
 
               <Wave inverted />
 
-              <section className="section soft-section" id="verse" data-section>
+              {/* <section className="section soft-section" id="verse" data-section>
                 <div className="section-inner">
                   <h2 className="script-heading section-title text-center">Firman Allah</h2>
                   <div className="verse-grid">
@@ -495,7 +499,7 @@ export default function InvitationClient() {
                     ))}
                   </div>
                 </div>
-              </section>
+              </section> */}
 
               <section className="section soft-section" id="story" data-section>
                 <div className="section-inner">
@@ -561,6 +565,7 @@ export default function InvitationClient() {
                         <h3>{event.label}</h3>
                         <p>{event.date}</p>
                         <strong>{event.time}</strong>
+                        
                       </article>
                     ))}
                   </div>
@@ -577,15 +582,6 @@ export default function InvitationClient() {
                       Buka Google Maps
                     </a>
                   </div>
-
-                  <div className="map-card reveal-up" data-reveal>
-                    <iframe
-                      title="Lokasi acara"
-                      src="https://www.google.com/maps?q=Balai%20Samudra%20Jakarta&z=15&output=embed"
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                  </div>
                 </div>
               </section>
 
@@ -600,7 +596,7 @@ export default function InvitationClient() {
                   <div className="gift-stack">
                     <article className="gift-card reveal-up" data-reveal>
                       <p className="gift-heading">Transfer</p>
-                      {bankAccounts.map((account) => (
+                      {bankAccounts.slice(0, 1).map((account) => (
                         <div key={account.number} className="bank-card">
                           <div>
                             <small>{account.bank}</small>
@@ -618,7 +614,7 @@ export default function InvitationClient() {
                       ))}
                     </article>
 
-                    <article className="gift-card reveal-up" data-reveal>
+                    {/* <article className="gift-card reveal-up" data-reveal>
                       <p className="gift-heading">QR / Gift</p>
                       <div className="gift-qr">
                         <Image src="/reference/gift-qr.png" alt="QR sample gift" fill sizes="250px" />
@@ -630,7 +626,7 @@ export default function InvitationClient() {
                       >
                         Copy Keterangan QR
                       </button>
-                    </article>
+                    </article> */}
                   </div>
                 </div>
               </section>
@@ -730,7 +726,7 @@ export default function InvitationClient() {
                   </button>
                 </div>
                 <p>Terima kasih atas doa dan kehadiran Anda.</p>
-                <strong>Uut Novendi &amp; Aulia</strong>
+                <strong>Uut Kosfendi &amp; Nabila Afira Fitri</strong>
               </footer>
             </main>
 

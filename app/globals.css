@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sacramento&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Naskh+Arabic:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sacramento&display=swap");
 
 :root {
   --bg: #0d1110;
@@ -63,18 +63,33 @@ video {
   place-items: center;
   padding: 24px;
   background:
-    linear-gradient(rgba(10, 11, 11, 0.72), rgba(10, 11, 11, 0.72)),
+    radial-gradient(circle at center, rgba(255, 247, 238, 0.4), transparent 34%),
+    linear-gradient(rgba(42, 31, 23, 0.26), rgba(42, 31, 23, 0.34)),
     url("/images/bride-groom-their-wedding-ceremony.jpg") center/cover;
+  backdrop-filter: blur(8px);
 }
 
 .welcome-card {
-  width: min(100%, 420px);
-  padding: 32px 26px;
-  border-radius: 30px;
+  width: min(100%, 392px);
+  padding: 0;
+  border-radius: 34px;
   text-align: center;
-  background: rgba(255, 248, 239, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: var(--shadow);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.welcome-card-frame,
+.home-card-frame {
+  width: 100%;
+  padding: 26px 24px 28px;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.78), transparent 42%),
+    linear-gradient(180deg, rgba(250, 243, 235, 0.84), rgba(243, 233, 221, 0.76));
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 20px 44px rgba(96, 78, 61, 0.1);
+  backdrop-filter: blur(18px);
 }
 
 .welcome-kicker,
@@ -171,13 +186,73 @@ video {
   color: var(--text-soft);
 }
 
+.welcome-card .home-title {
+  font-size: clamp(2.9rem, 11vw, 4.2rem);
+  line-height: 0.9;
+  color: #614427;
+}
+
+.welcome-card-frame {
+  padding: 22px 20px 24px;
+}
+
+.welcome-card .home-eyebrow {
+  margin-bottom: 12px;
+}
+
+.welcome-card .home-name-top {
+  padding-bottom: 28px;
+}
+
+.welcome-card .home-name-bottom {
+  gap: 2px;
+  padding-top: 28px;
+  font-size: 0.92em;
+  line-height: 0.9;
+}
+
+.welcome-card .home-name-line {
+  width: min(100%, 248px);
+}
+
+.welcome-card .home-divider {
+  width: min(100%, 224px);
+}
+
+.welcome-card .home-divider-badge {
+  width: 50px;
+  height: 50px;
+  font-size: 1.85rem;
+}
+
+.welcome-card .home-date {
+  margin: 6px 0 16px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgba(95, 78, 63, 0.88);
+}
+
 .welcome-guest {
   display: grid;
-  gap: 6px;
-  margin: 22px 0 26px;
-  padding: 15px 16px;
+  gap: 4px;
+  margin: 16px 0 18px;
+  padding: 13px 16px;
   border-radius: 22px;
   background: rgba(115, 93, 70, 0.08);
+}
+
+.welcome-guest small {
+  color: rgba(95, 78, 63, 0.82);
+}
+
+.welcome-guest strong {
+  font-size: 0.94rem;
+}
+
+.welcome-card .button-primary {
+  min-height: 44px;
+  min-width: 184px;
+  padding-inline: 20px;
 }
 
 .invitation-layout {
@@ -307,8 +382,8 @@ video {
 }
 
 .home-bg {
-  opacity: 0.34;
-  filter: saturate(0.82) blur(1px);
+  opacity: 0.2;
+  filter: saturate(0.76) blur(1.8px);
 }
 
 .hero-glow {
@@ -338,25 +413,12 @@ video {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: min(100% - 28px, 390px);
+  gap: 22px;
+  width: min(100% - 30px, 392px);
   margin: 0 auto;
-  padding: 42px 28px 56px;
+  padding: 40px 0 54px;
   text-align: center;
   z-index: 1;
-}
-
-.home-inner::before {
-  content: "";
-  position: absolute;
-  inset: auto 0;
-  height: min(440px, calc(100% - 120px));
-  border-radius: 32px;
-  background: rgba(255, 249, 242, 0.34);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 18px 44px rgba(96, 78, 61, 0.08);
-  backdrop-filter: blur(18px);
-  z-index: -1;
 }
 
 .script-heading {
@@ -365,23 +427,24 @@ video {
 }
 
 .home-inner .script-heading {
-  font-size: clamp(3.1rem, 12.2vw, 4.5rem);
+  font-size: clamp(2.8rem, 10.4vw, 4rem);
 }
 
 .home-eyebrow {
-  letter-spacing: 0.32em;
-  color: rgba(103, 78, 51, 0.9);
+  margin-bottom: 18px;
+  letter-spacing: 0.36em;
+  color: rgba(120, 95, 68, 0.82);
 }
 
 .home-title {
   position: relative;
   display: grid;
   justify-items: center;
-  gap: 0;
+  gap: 2px;
   width: 100%;
   max-width: 100%;
-  line-height: 0.88;
-  transform: translateY(10px);
+  line-height: 0.9;
+  transform: none;
   color: #614427;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.28);
 }
@@ -391,66 +454,104 @@ video {
 }
 
 .home-name-line {
+  width: min(100%, 272px);
   max-width: 100%;
+  margin-inline: auto;
   text-align: center;
   text-wrap: balance;
 }
 
 .home-name-top {
-  padding-bottom: 28px;
+  display: grid;
+  place-items: center;
+  padding-bottom: 40px;
 }
 
 .home-name-bottom {
-  padding-top: 28px;
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  padding-top: 40px;
+  font-size: 0.9em;
+  line-height: 0.88;
 }
 
-.home-ampersand {
+.home-name-bottom > span {
+  display: block;
+  width: 100%;
+}
+
+.home-divider {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  margin: 0;
-  font-size: 0.8em;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  width: min(100%, 260px);
+  gap: 0;
   z-index: 1;
 }
 
+.home-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(151, 126, 99, 0.34), transparent);
+}
+
+.home-divider-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+
+  color: #a08566;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  font-style: italic;
+  line-height: 1;
+}
+
 .hero-date {
-  margin: 12px 0 18px;
+  margin: 24px 0 18px;
   font-size: 1.05rem;
   color: var(--text-soft);
+  margin-top: 10px;
 }
 
 .home-date {
-  margin: 4px 0 12px;
-  font-size: 1rem;
+  margin: 0 0 18px;
+  font-size: 0.94rem;
   font-weight: 500;
-  color: rgba(86, 71, 57, 0.86);
+  color: rgba(95, 78, 63, 0.88);
+  margin-top: 10px;
 }
 
 .hero-calendar-button {
-  min-height: 44px;
-  padding: 0 18px;
+  min-height: 46px;
+  min-width: 210px;
+  padding: 0 24px;
   color: #6a4f34;
-  background: rgba(255, 251, 245, 0.78);
-  border-color: rgba(106, 79, 52, 0.08);
-  box-shadow: 0 10px 20px rgba(125, 96, 66, 0.08);
+  background: rgba(255, 251, 245, 0.9);
+  border-color: rgba(106, 79, 52, 0.12);
+  box-shadow: 0 10px 20px rgba(125, 96, 66, 0.06);
 }
 
 .scroll-cue {
   display: grid;
   justify-items: center;
-  gap: 8px;
-  margin-top: 28px;
-  color: rgba(70, 58, 48, 0.56);
+  gap: 6px;
+  margin-top: 10px;
+  color: rgba(101, 85, 69, 0.7);
 }
 
 .scroll-mouse {
   width: 24px;
-  height: 42px;
+  height: 40px;
   padding: 6px;
   border-radius: 999px;
-  border: 2px solid rgba(111, 87, 65, 0.46);
+  border: 2px solid rgba(111, 87, 65, 0.34);
+  background: rgba(255, 249, 242, 0.3);
 }
 
 .scroll-dot {
@@ -463,7 +564,7 @@ video {
 }
 
 .scroll-label {
-  font-size: 0.96rem;
+  font-size: 0.88rem;
 }
 
 @keyframes scrollCue {
@@ -788,6 +889,29 @@ video {
 .map-card {
   padding: 18px;
   border-radius: 24px;
+}
+
+.venue-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 20px 18px 16px;
+  margin-top: 15px;
+}
+
+.venue-card h3 {
+  margin-bottom: 2px;
+  line-height: 1.15;
+}
+
+.venue-card p {
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.45;
+}
+
+.venue-card .button-inline {
+  margin-top: 6px;
 }
 
 .event-card strong,
@@ -1116,6 +1240,95 @@ video {
 @media (max-width: 640px) {
   .section-inner {
     padding-inline: 18px;
+  }
+
+  .home-inner {
+    width: min(100% - 20px, 372px);
+    padding-top: 28px;
+    padding-bottom: 42px;
+  }
+
+  .home-card-frame {
+    padding: 22px 18px 24px;
+    border-radius: 30px;
+  }
+
+  .welcome-card {
+    width: min(100%, 372px);
+  }
+
+  .welcome-card-frame {
+    padding: 20px 18px 22px;
+  }
+
+  .welcome-card .home-title {
+    font-size: clamp(2.45rem, 11.8vw, 3.25rem);
+  }
+
+  .welcome-card .home-name-top {
+    padding-bottom: 26px;
+  }
+
+  .welcome-card .home-name-bottom {
+    padding-top: 26px;
+  }
+
+  .welcome-card .home-divider {
+    width: min(100%, 208px);
+  }
+
+  .welcome-card .home-divider-badge {
+    width: 46px;
+    height: 46px;
+    font-size: 1.65rem;
+  }
+
+  .welcome-card .home-date {
+    margin-top: 4px;
+    margin-bottom: 14px;
+  }
+
+  .home-inner .script-heading {
+    font-size: clamp(2.5rem, 12.2vw, 3.45rem);
+  }
+
+  .home-divider {
+    width: min(100%, 220px);
+  }
+
+  .home-divider-badge {
+    width: 52px;
+    height: 52px;
+    font-size: 1.8rem;
+  }
+
+  .home-date {
+    font-size: 0.9rem;
+  }
+
+  .hero-calendar-button {
+    min-width: 196px;
+    min-height: 44px;
+    padding-inline: 18px;
+  }
+
+  .home-divider-badge {
+    width: 54px;
+    height: 54px;
+    font-size: 1.9rem;
+  }
+
+  .home-date {
+    font-size: 0.92rem;
+  }
+
+  .venue-card {
+    gap: 8px;
+    padding: 18px 16px 16px;
+  }
+
+  .venue-card p {
+    max-width: none;
   }
 
   .bottom-nav {
