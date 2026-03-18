@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import InvitationClient from "../components/invitation-client";
 
 export default function Home() {
-  return <InvitationClient mode="welcome" />;
+  return (
+    <Suspense fallback={null}>
+      <InvitationClient mode="welcome" />
+    </Suspense>
+  );
 }
