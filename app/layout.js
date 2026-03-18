@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Undangan Pernikahan Sample",
-  description: "Template undangan pernikahan digital dengan countdown, maps, komentar, musik, dan QR hadiah."
+  title: "The Wedding of Uut Kusfendi & Nabila Avira Fitri",
+  description: "Undangan pernikahan Uut Kusfendi dan Nabila Avira Fitri pada Minggu, 12 April 2026 di Balai Samudra, Jakarta."
 };
 
 export default function RootLayout({ children }) {
