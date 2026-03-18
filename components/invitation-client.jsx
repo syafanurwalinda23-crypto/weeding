@@ -63,21 +63,6 @@ const navItems = [
   { id: "comment", short: "Ucapan", icon: "solar:chat-round-dots-bold" }
 ];
 
-const initialMessages = [
-  {
-    name: "Rina & Keluarga",
-    attendance: "Hadir",
-    message: "MasyaAllah, semoga acara lancar dan menjadi keluarga yang sakinah mawaddah warahmah.",
-    createdAt: "Baru saja"
-  },
-  {
-    name: "Bima",
-    attendance: "Berhalangan",
-    message: "Mohon maaf belum bisa hadir. Semoga cinta kalian selalu dijaga Allah SWT.",
-    createdAt: "1 jam lalu"
-  }
-];
-
 const emptyCountdown = {
   days: 0,
   hours: 0,
@@ -102,6 +87,48 @@ function formatCountdown(target) {
   };
 }
 
+function formatCommentTime(value) {
+  if (!value) {
+    return "";
+  }
+
+  const diff = Date.now() - new Date(value).getTime();
+
+  if (Number.isNaN(diff) || diff < 0) {
+    return new Intl.DateTimeFormat("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }).format(new Date(value));
+  }
+
+  const seconds = Math.floor(diff / 1000);
+  if (seconds < 60) {
+    return "Baru saja";
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) {
+    return `${minutes} menit lalu`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) {
+    return `${hours} jam lalu`;
+  }
+
+  const days = Math.floor(hours / 24);
+  if (days < 30) {
+    return `${days} hari lalu`;
+  }
+
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  }).format(new Date(value));
+}
+
 function InvitationHeading() {
   return (
     <div className="invitation-heading">
@@ -124,16 +151,16 @@ function InvitationHeading() {
   );
 }
 
-function PersonCard({ imageSrc, alt, name, role, parents }) {
+function PersonCard({ name, role, parents }) {
   return (
     <article className="person-card" data-reveal>
-      <div className="person-photo">
-        <Image src={imageSrc} alt={alt} fill sizes="220px" />
+      <div className="person-copy">
+        <p className="section-kicker person-role">{role}</p>
+        <h3>{name}</h3>
+        <span className="person-divider" aria-hidden="true" />
+        <p className="person-parents">{parents[0]}</p>
+        <p className="person-parents">dan {parents[1]}</p>
       </div>
-      <p className="section-kicker">{role}</p>
-      <h3>{name}</h3>
-      <p>{parents[0]}</p>
-      <p>dan {parents[1]}</p>
     </article>
   );
 }
@@ -146,7 +173,10 @@ export default function InvitationClient({ mode = "invite" }) {
   const [countdown, setCountdown] = useState(emptyCountdown);
   const [activeSection, setActiveSection] = useState("home");
   const [storyOpen, setStoryOpen] = useState(false);
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState([]);
+  const [commentsLoading, setCommentsLoading] = useState(mode === "invite");
+  const [commentError, setCommentError] = useState("");
+  const [submittingComment, setSubmittingComment] = useState(false);
   const [form, setForm] = useState({
     name: "",
     attendance: "Hadir",
@@ -169,14 +199,6 @@ export default function InvitationClient({ mode = "invite" }) {
       return;
     }
 
-    const savedMessages = window.localStorage.getItem("wedding-comments");
-    if (savedMessages) {
-      try {
-        setMessages(JSON.parse(savedMessages));
-      } catch {
-        window.localStorage.removeItem("wedding-comments");
-      }
-    }
   }, [mode, searchParams]);
 
   useEffect(() => {
@@ -198,8 +220,40 @@ export default function InvitationClient({ mode = "invite" }) {
       return;
     }
 
-    window.localStorage.setItem("wedding-comments", JSON.stringify(messages));
-  }, [messages, mode]);
+    let isMounted = true;
+
+    const loadComments = async () => {
+      setCommentsLoading(true);
+      setCommentError("");
+
+      try {
+        const response = await fetch("/api/comments", { cache: "no-store" });
+        const payload = await response.json();
+
+        if (!response.ok) {
+          throw new Error(payload?.error || "Gagal memuat ucapan.");
+        }
+
+        if (isMounted) {
+          setMessages(Array.isArray(payload.comments) ? payload.comments : []);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setCommentError(error.message || "Gagal memuat ucapan.");
+        }
+      } finally {
+        if (isMounted) {
+          setCommentsLoading(false);
+        }
+      }
+    };
+
+    loadComments();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [mode]);
 
   useEffect(() => {
     if (mode !== "invite") {
@@ -289,7 +343,7 @@ export default function InvitationClient({ mode = "invite" }) {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const trimmedName = form.name.trim();
@@ -299,20 +353,38 @@ export default function InvitationClient({ mode = "invite" }) {
       return;
     }
 
-    setMessages((current) => [
-      {
-        name: trimmedName,
-        attendance: form.attendance,
-        message: trimmedMessage,
-        createdAt: "Baru saja"
-      },
-      ...current
-    ]);
+    setSubmittingComment(true);
+    setCommentError("");
 
-    setForm((current) => ({
-      ...current,
-      message: ""
-    }));
+    try {
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: trimmedName,
+          attendance: form.attendance,
+          message: trimmedMessage
+        })
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload?.error || "Gagal mengirim ucapan.");
+      }
+
+      setMessages((current) => [payload.comment, ...current]);
+      setForm((current) => ({
+        ...current,
+        message: ""
+      }));
+    } catch (error) {
+      setCommentError(error.message || "Gagal mengirim ucapan.");
+    } finally {
+      setSubmittingComment(false);
+    }
   };
 
   const copyText = async (value) => {
@@ -426,18 +498,14 @@ export default function InvitationClient({ mode = "invite" }) {
                   </div>
                   <div className="couple-grid">
                     <PersonCard
-                      imageSrc="/images/mempelai/male-uut.webp"
-                      alt="Pengantin pria"
                       name={weddingDetails.groom}
                       role="Putra pertama"
-                      parents={["Bapak Ahmad Prasetyo", "Ibu Siti Rahma"]}
+                      parents={["Bapak Timan", "Ibu Sri Widiyanti"]}
                     />
                     <PersonCard
-                      imageSrc="/images/mempelai/female-nabila.webp"
-                      alt="Pengantin wanita"
                       name={weddingDetails.bride}
                       role="Putri kedua"
-                      parents={["Bapak Mulyono", "Ibu Nurhayati"]}
+                      parents={["Bapak Alm. Mulyono", "Ibu Eny Kismiastuti"]}
                     />
                   </div>
                 </article>
@@ -586,11 +654,6 @@ export default function InvitationClient({ mode = "invite" }) {
                     <p className="section-copy">Silakan kirim ucapan dan konfirmasi kehadiran Anda.</p>
                   </div>
 
-                  <div className="info-banner">
-                    <strong>Catatan</strong>
-                    <p>Ucapan saat ini tersimpan lokal di browser yang sama.</p>
-                  </div>
-
                   <form className="comment-form" onSubmit={handleSubmit}>
                     <label>
                       Nama
@@ -638,18 +701,25 @@ export default function InvitationClient({ mode = "invite" }) {
                       />
                     </label>
 
-                    <button type="submit" className="button button-primary button-full">
-                      Kirim Ucapan
+                    <button type="submit" className="button button-primary button-full" disabled={submittingComment}>
+                      {submittingComment ? "Mengirim..." : "Kirim Ucapan"}
                     </button>
                   </form>
 
+                  {commentsLoading && <p className="comment-feedback">Memuat ucapan...</p>}
+                  {commentError && <p className="comment-feedback comment-feedback-error">{commentError}</p>}
+
                   <div className="comment-list">
+                    {!commentsLoading && messages.length === 0 && !commentError && (
+                      <p className="comment-feedback">Belum ada ucapan. Jadilah yang pertama mengirim doa.</p>
+                    )}
+
                     {messages.map((item, index) => (
-                      <article key={`${item.name}-${index}`} className="comment-card">
+                      <article key={item.id ?? `${item.name}-${index}`} className="comment-card">
                         <div className="comment-meta">
                           <div>
                             <strong>{item.name}</strong>
-                            <small>{item.createdAt}</small>
+                            <small>{formatCommentTime(item.created_at)}</small>
                           </div>
                           <span>{item.attendance}</span>
                         </div>
