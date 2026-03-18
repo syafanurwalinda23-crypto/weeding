@@ -56,11 +56,11 @@ const bankAccounts = [
 ];
 
 const navItems = [
-  { id: "home", short: "Home" },
-  { id: "couple", short: "Couple" },
-  { id: "story", short: "Story" },
-  { id: "event", short: "Acara" },
-  { id: "comment", short: "Ucapan" }
+  { id: "home", short: "Home", icon: "solar:home-2-bold" },
+  { id: "couple", short: "Couple", icon: "solar:users-group-rounded-bold" },
+  { id: "story", short: "Story", icon: "solar:hearts-bold" },
+  { id: "event", short: "Acara", icon: "solar:calendar-mark-bold" },
+  { id: "comment", short: "Ucapan", icon: "solar:chat-round-dots-bold" }
 ];
 
 const initialMessages = [
@@ -426,14 +426,14 @@ export default function InvitationClient({ mode = "invite" }) {
                   </div>
                   <div className="couple-grid">
                     <PersonCard
-                      imageSrc="/reference/groom.webp"
+                      imageSrc="/images/mempelai/male-uut.webp"
                       alt="Pengantin pria"
                       name={weddingDetails.groom}
                       role="Putra pertama"
                       parents={["Bapak Ahmad Prasetyo", "Ibu Siti Rahma"]}
                     />
                     <PersonCard
-                      imageSrc="/reference/bride.webp"
+                      imageSrc="/images/mempelai/female-nabila.webp"
                       alt="Pengantin wanita"
                       name={weddingDetails.bride}
                       role="Putri kedua"
@@ -535,14 +535,14 @@ export default function InvitationClient({ mode = "invite" }) {
                     </a>
                   </div>
 
-                  <div className="map-card">
+                  {/* <div className="map-card">
                     <iframe
                       title="Lokasi acara"
                       src="https://www.google.com/maps?q=Balai%20Samudra%20Jakarta&z=15&output=embed"
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                     />
-                  </div>
+                  </div> */}
                 </article>
               </section>
 
@@ -680,10 +680,12 @@ export default function InvitationClient({ mode = "invite" }) {
               </footer>
             </main>
 
-            <nav className="bottom-nav">
+              <nav className="bottom-nav">
               {navItems.map((item) => (
                 <a key={item.id} href={`#${item.id}`} className={activeSection === item.id ? "active" : ""}>
-                  <span className="nav-indicator" />
+                  <span className="nav-icon" aria-hidden="true">
+                    <Icon icon={item.icon} />
+                  </span>
                   <span className="nav-label">{item.short}</span>
                 </a>
               ))}
