@@ -1,4 +1,5 @@
 import "./globals.css";
+import { AppShell } from "../components/app-shell";
 
 export const metadata = {
   metadataBase: new URL("https://weeding-lilac.vercel.app"),
@@ -31,7 +32,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body>
+        <AppShell>{children}</AppShell>
+      </body>
     </html>
   );
 }

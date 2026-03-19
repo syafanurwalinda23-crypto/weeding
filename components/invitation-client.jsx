@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useMusicPlayer } from "./app-shell";
 
 const weddingDate = "2026-04-12T08:00:00+07:00";
 
@@ -12,47 +13,50 @@ const weddingDetails = {
   bride: "Nabila Avira Fitri",
   brideLines: ["Nabila", "Avira Fitri"],
   dateLabel: "Minggu, 12 April 2026",
-  venueTitle: "Balai Samudra, Jakarta",
-  venueAddress: "Jl. Boulevard Barat Raya, Kelapa Gading, Jakarta Utara"
+  venueTitle: "Kediaman Mempelai Wanita",
+  venueAddress: "Jl. Plumpang B V No.49c, RT.3/RW.4, Rawabadak Sel., Kec. Koja, Jkt Utara, Daerah Khusus Ibukota Jakarta 14230",
 };
 
 const storyMoments = [
   {
     title: "Pertemuan Pertama",
     year: "2021",
-    description: "Kami bertemu dalam suasana sederhana, lalu tumbuh menjadi kisah yang selalu ingin kami jaga."
+    description:
+      "Kami bertemu dalam suasana sederhana, lalu tumbuh menjadi kisah yang selalu ingin kami jaga.",
   },
   {
     title: "Lamaran",
     year: "2025",
-    description: "Dengan restu keluarga, kami memutuskan melangkah lebih jauh menuju ibadah terpanjang."
+    description:
+      "Dengan restu keluarga, kami memutuskan melangkah lebih jauh menuju ibadah terpanjang.",
   },
   {
     title: "Hari Bahagia",
     year: "2026",
-    description: "Kini kami mengundang Anda untuk menjadi bagian dari momen yang akan kami kenang seumur hidup."
-  }
+    description:
+      "Kini kami mengundang Anda untuk menjadi bagian dari momen yang akan kami kenang seumur hidup.",
+  },
 ];
 
 const events = [
   {
     label: "Akad Nikah",
     time: "08.00 WIB - selesai",
-    date: weddingDetails.dateLabel
+    date: weddingDetails.dateLabel,
   },
   {
     label: "Resepsi",
     time: "11.00 WIB - 15.00 WIB",
-    date: weddingDetails.dateLabel
-  }
+    date: weddingDetails.dateLabel,
+  },
 ];
 
 const bankAccounts = [
   {
     bank: "BCA",
     number: "1234567890",
-    name: "Nabila Avira Fitri"
-  }
+    name: "Nabila Avira Fitri",
+  },
 ];
 
 const navItems = [
@@ -60,7 +64,7 @@ const navItems = [
   { id: "couple", short: "Couple", icon: "solar:users-group-rounded-bold" },
   { id: "story", short: "Story", icon: "solar:hearts-bold" },
   { id: "event", short: "Acara", icon: "solar:calendar-mark-bold" },
-  { id: "comment", short: "Ucapan", icon: "solar:chat-round-dots-bold" }
+  { id: "comment", short: "Ucapan", icon: "solar:chat-round-dots-bold" },
 ];
 
 const emptyCountdown = {
@@ -68,7 +72,7 @@ const emptyCountdown = {
   hours: 0,
   minutes: 0,
   seconds: 0,
-  finished: false
+  finished: false,
 };
 
 function formatCountdown(target) {
@@ -83,7 +87,7 @@ function formatCountdown(target) {
     hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
     minutes: Math.floor((diff / (1000 * 60)) % 60),
     seconds: Math.floor((diff / 1000) % 60),
-    finished: false
+    finished: false,
   };
 }
 
@@ -98,7 +102,7 @@ function formatCommentTime(value) {
     return new Intl.DateTimeFormat("id-ID", {
       day: "numeric",
       month: "long",
-      year: "numeric"
+      year: "numeric",
     }).format(new Date(value));
   }
 
@@ -125,7 +129,7 @@ function formatCommentTime(value) {
   return new Intl.DateTimeFormat("id-ID", {
     day: "numeric",
     month: "long",
-    year: "numeric"
+    year: "numeric",
   }).format(new Date(value));
 }
 
@@ -168,8 +172,8 @@ function PersonCard({ name, role, parents }) {
 export default function InvitationClient({ mode = "invite" }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { musicEnabled, startMusic, toggleMusic } = useMusicPlayer();
   const [guestName, setGuestName] = useState("Bapak/Ibu/Saudara/i");
-  const [musicEnabled, setMusicEnabled] = useState(false);
   const [countdown, setCountdown] = useState(emptyCountdown);
   const [activeSection, setActiveSection] = useState("home");
   const [storyOpen, setStoryOpen] = useState(false);
@@ -180,10 +184,8 @@ export default function InvitationClient({ mode = "invite" }) {
   const [form, setForm] = useState({
     name: "",
     attendance: "Hadir",
-    message: ""
+    message: "",
   });
-
-  const audioRef = useRef(null);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -198,7 +200,6 @@ export default function InvitationClient({ mode = "invite" }) {
     if (mode !== "invite") {
       return;
     }
-
   }, [mode, searchParams]);
 
   useEffect(() => {
@@ -269,7 +270,7 @@ export default function InvitationClient({ mode = "invite" }) {
           }
         });
       },
-      { threshold: 0.16 }
+      { threshold: 0.16 },
     );
 
     revealElements.forEach((element) => revealObserver.observe(element));
@@ -283,7 +284,7 @@ export default function InvitationClient({ mode = "invite" }) {
           }
         });
       },
-      { threshold: 0.45 }
+      { threshold: 0.45 },
     );
 
     sections.forEach((section) => sectionObserver.observe(section));
@@ -306,27 +307,8 @@ export default function InvitationClient({ mode = "invite" }) {
     };
   }, [mode]);
 
-  const toggleMusic = async () => {
-    const player = audioRef.current;
-    if (!player) {
-      return;
-    }
-
-    if (musicEnabled) {
-      player.pause();
-      setMusicEnabled(false);
-      return;
-    }
-
-    try {
-      await player.play();
-      setMusicEnabled(true);
-    } catch {
-      setMusicEnabled(false);
-    }
-  };
-
-  const openInvitation = () => {
+  const openInvitation = async () => {
+    await startMusic();
     const params = searchParams.toString();
     router.push(params ? `/undangan?${params}` : "/undangan");
   };
@@ -360,13 +342,13 @@ export default function InvitationClient({ mode = "invite" }) {
       const response = await fetch("/api/comments", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: trimmedName,
           attendance: form.attendance,
-          message: trimmedMessage
-        })
+          message: trimmedMessage,
+        }),
       });
 
       const payload = await response.json();
@@ -378,7 +360,7 @@ export default function InvitationClient({ mode = "invite" }) {
       setMessages((current) => [payload.comment, ...current]);
       setForm((current) => ({
         ...current,
-        message: ""
+        message: "",
       }));
     } catch (error) {
       setCommentError(error.message || "Gagal mengirim ucapan.");
@@ -404,7 +386,7 @@ export default function InvitationClient({ mode = "invite" }) {
       text: `The Wedding of ${weddingDetails.groom} & ${weddingDetails.bride}`,
       dates: `${start}/${end}`,
       details: `Undangan pernikahan ${weddingDetails.groom} dan ${weddingDetails.bride}.`,
-      location: weddingDetails.venueTitle
+      location: weddingDetails.venueTitle,
     }).toString();
 
     window.open(url.toString(), "_blank", "noreferrer");
@@ -414,7 +396,13 @@ export default function InvitationClient({ mode = "invite" }) {
     return (
       <div className="welcome-screen">
         <div className="welcome-backdrop" aria-hidden="true">
-          <Image src="/images/bg-welcome.jpg" alt="" fill sizes="100vw" priority />
+          <Image
+            src="/images/bg-welcome.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            priority
+          />
         </div>
         <article className="welcome-card">
           <InvitationHeading />
@@ -422,7 +410,11 @@ export default function InvitationClient({ mode = "invite" }) {
             <small>Kepada Yth.</small>
             <strong>{guestName}</strong>
           </div>
-          <button type="button" className="button button-primary welcome-open-button" onClick={openInvitation}>
+          <button
+            type="button"
+            className="button button-primary welcome-open-button"
+            onClick={openInvitation}
+          >
             Buka Undangan
           </button>
         </article>
@@ -432,13 +424,17 @@ export default function InvitationClient({ mode = "invite" }) {
 
   return (
     <>
-      <audio ref={audioRef} src="/reference/theme-song.mp3" loop preload="auto" />
-
       <div className="invitation-layout">
         <aside className="desktop-stage">
           <article className="desktop-card">
             <div className="desktop-photo">
-              <Image src="/images/Uut-Weeding.png" alt="Foto Uut dan Nabila" fill sizes="420px" priority />
+              <Image
+                src="/images/Uut-Weeding.png"
+                alt="Foto Uut dan Nabila"
+                fill
+                sizes="420px"
+                priority
+              />
             </div>
             <InvitationHeading />
             <div className="summary-list">
@@ -452,10 +448,18 @@ export default function InvitationClient({ mode = "invite" }) {
               </div>
             </div>
             <div className="desktop-actions">
-              <button type="button" className="button button-primary" onClick={openCalendar}>
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={openCalendar}
+              >
                 Save Calendar
               </button>
-              <button type="button" className="button button-secondary" onClick={toggleMusic}>
+              <button
+                type="button"
+                className="button button-secondary"
+                onClick={toggleMusic}
+              >
                 {musicEnabled ? "Matikan Musik" : "Putar Musik"}
               </button>
             </div>
@@ -468,7 +472,13 @@ export default function InvitationClient({ mode = "invite" }) {
               <section className="section" id="home" data-section>
                 <article className="surface-card hero-card" data-reveal>
                   <div className="hero-photo">
-                    <Image src="/images/Uut-Weeding.png" alt="Foto Uut dan Nabila" fill sizes="360px" priority />
+                    <Image
+                      src="/images/Uut-Weeding.png"
+                      alt="Foto Uut dan Nabila"
+                      fill
+                      sizes="360px"
+                      priority
+                    />
                   </div>
                   <InvitationHeading />
                   {/* <div className="hero-meta">
@@ -476,7 +486,11 @@ export default function InvitationClient({ mode = "invite" }) {
                     <span className="meta-pill">{weddingDetails.venueTitle}</span>
                   </div> */}
                   <div className="hero-actions">
-                    <button type="button" className="button button-primary" onClick={openCalendar}>
+                    <button
+                      type="button"
+                      className="button button-primary"
+                      onClick={openCalendar}
+                    >
                       Save Calendar
                     </button>
                     <a href="#event" className="button button-secondary">
@@ -490,10 +504,13 @@ export default function InvitationClient({ mode = "invite" }) {
                 <article className="surface-card" data-reveal>
                   <div className="section-head">
                     <span className="section-kicker">Mempelai</span>
-                    <h2 className="section-title">Assalamualaikum Warahmatullahi Wabarakatuh</h2>
+                    <h2 className="section-title">
+                      Assalamualaikum Warahmatullahi Wabarakatuh
+                    </h2>
                     <p className="section-copy">
-                      Dengan memohon rahmat dan ridho Allah SWT, kami mengundang <strong>{guestName}</strong> untuk
-                      hadir dalam acara pernikahan kami.
+                      Dengan memohon rahmat dan ridho Allah SWT, kami mengundang{" "}
+                      <strong>{guestName}</strong> untuk hadir dalam acara
+                      pernikahan kami.
                     </p>
                   </div>
                   <div className="couple-grid">
@@ -557,7 +574,10 @@ export default function InvitationClient({ mode = "invite" }) {
                   <div className="section-head">
                     <span className="section-kicker">Acara</span>
                     <h2 className="section-title">Save The Date</h2>
-                    <p className="section-copy">Catat tanggalnya dan pilih cara termudah untuk hadir di hari bahagia kami.</p>
+                    <p className="section-copy">
+                      Catat tanggalnya dan pilih cara termudah untuk hadir di
+                      hari bahagia kami.
+                    </p>
                   </div>
 
                   <div className="countdown-grid">
@@ -594,7 +614,7 @@ export default function InvitationClient({ mode = "invite" }) {
                       <p>{weddingDetails.venueAddress}</p>
                     </div>
                     <a
-                      href="https://maps.google.com/?q=Balai+Samudra+Jakarta"
+                      href="https://maps.app.goo.gl/jkNEmAQ5eU28UVG58?g_st=aw"
                       target="_blank"
                       rel="noreferrer"
                       className="button button-secondary button-inline"
@@ -620,7 +640,8 @@ export default function InvitationClient({ mode = "invite" }) {
                     <span className="section-kicker">Gift</span>
                     <h2 className="section-title">Love Gift</h2>
                     <p className="section-copy">
-                      Jika berhalangan hadir dan ingin mengirim tanda kasih, Anda dapat menggunakan rekening berikut.
+                      Jika berhalangan hadir dan ingin mengirim tanda kasih,
+                      Anda dapat menggunakan rekening berikut.
                     </p>
                   </div>
 
@@ -651,7 +672,9 @@ export default function InvitationClient({ mode = "invite" }) {
                   <div className="section-head">
                     <span className="section-kicker">Ucapan</span>
                     <h2 className="section-title">Ucapan &amp; Doa</h2>
-                    <p className="section-copy">Silakan kirim ucapan dan konfirmasi kehadiran Anda.</p>
+                    <p className="section-copy">
+                      Silakan kirim ucapan dan konfirmasi kehadiran Anda.
+                    </p>
                   </div>
 
                   <form className="comment-form" onSubmit={handleSubmit}>
@@ -664,7 +687,7 @@ export default function InvitationClient({ mode = "invite" }) {
                         onChange={(event) =>
                           setForm((current) => ({
                             ...current,
-                            name: event.target.value
+                            name: event.target.value,
                           }))
                         }
                       />
@@ -677,7 +700,7 @@ export default function InvitationClient({ mode = "invite" }) {
                         onChange={(event) =>
                           setForm((current) => ({
                             ...current,
-                            attendance: event.target.value
+                            attendance: event.target.value,
                           }))
                         }
                       >
@@ -695,27 +718,44 @@ export default function InvitationClient({ mode = "invite" }) {
                         onChange={(event) =>
                           setForm((current) => ({
                             ...current,
-                            message: event.target.value
+                            message: event.target.value,
                           }))
                         }
                       />
                     </label>
 
-                    <button type="submit" className="button button-primary button-full" disabled={submittingComment}>
+                    <button
+                      type="submit"
+                      className="button button-primary button-full"
+                      disabled={submittingComment}
+                    >
                       {submittingComment ? "Mengirim..." : "Kirim Ucapan"}
                     </button>
                   </form>
 
-                  {commentsLoading && <p className="comment-feedback">Memuat ucapan...</p>}
-                  {commentError && <p className="comment-feedback comment-feedback-error">{commentError}</p>}
+                  {commentsLoading && (
+                    <p className="comment-feedback">Memuat ucapan...</p>
+                  )}
+                  {commentError && (
+                    <p className="comment-feedback comment-feedback-error">
+                      {commentError}
+                    </p>
+                  )}
 
                   <div className="comment-list">
-                    {!commentsLoading && messages.length === 0 && !commentError && (
-                      <p className="comment-feedback">Belum ada ucapan. Jadilah yang pertama mengirim doa.</p>
-                    )}
+                    {!commentsLoading &&
+                      messages.length === 0 &&
+                      !commentError && (
+                        <p className="comment-feedback">
+                          Belum ada ucapan. Jadilah yang pertama mengirim doa.
+                        </p>
+                      )}
 
                     {messages.map((item, index) => (
-                      <article key={item.id ?? `${item.name}-${index}`} className="comment-card">
+                      <article
+                        key={item.id ?? `${item.name}-${index}`}
+                        className="comment-card"
+                      >
                         <div className="comment-meta">
                           <div>
                             <strong>{item.name}</strong>
@@ -742,7 +782,11 @@ export default function InvitationClient({ mode = "invite" }) {
                   aria-label={musicEnabled ? "Matikan musik" : "Putar musik"}
                 >
                   <Icon
-                    icon={musicEnabled ? "solar:volume-loud-bold" : "solar:volume-cross-bold"}
+                    icon={
+                      musicEnabled
+                        ? "solar:volume-loud-bold"
+                        : "solar:volume-cross-bold"
+                    }
                     className="sound-iconify"
                     aria-hidden="true"
                   />
@@ -750,9 +794,13 @@ export default function InvitationClient({ mode = "invite" }) {
               </footer>
             </main>
 
-              <nav className="bottom-nav">
+            <nav className="bottom-nav">
               {navItems.map((item) => (
-                <a key={item.id} href={`#${item.id}`} className={activeSection === item.id ? "active" : ""}>
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={activeSection === item.id ? "active" : ""}
+                >
                   <span className="nav-icon" aria-hidden="true">
                     <Icon icon={item.icon} />
                   </span>
