@@ -42,7 +42,7 @@ export function AppShell({ children }) {
   return (
     <MusicPlayerContext.Provider value={{ musicEnabled, startMusic, toggleMusic }}>
       {children}
-      <audio ref={audioRef} src="/audio/paulyudin-wedding-485932.mp3" loop preload="auto" />
+      <audio ref={audioRef} src="/audio/cundamani-violin-cover.mp3" loop preload="auto" />
     </MusicPlayerContext.Provider>
   );
 }
