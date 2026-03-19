@@ -59,6 +59,12 @@ const bankAccounts = [
   },
 ];
 
+const hadithQuote = {
+  arabic: "مَنِ اسْتَطَاعَ مِنْكُمُ الْبَاءَةَ فَلْيَتَزَوَّجْ",
+  translation: "Barang siapa di antara kalian telah mampu, maka menikahlah.",
+  source: "HR. Bukhari dan Muslim",
+};
+
 const navItems = [
   { id: "home", short: "Home", icon: "solar:home-2-bold" },
   { id: "couple", short: "Couple", icon: "solar:users-group-rounded-bold" },
@@ -512,6 +518,15 @@ export default function InvitationClient({ mode = "invite" }) {
                       <strong>{guestName}</strong> untuk hadir dalam acara
                       pernikahan kami.
                     </p>
+                  </div>
+                  <div className="hadith-card" data-reveal>
+                    <p className="hadith-arabic" lang="ar" dir="rtl">
+                      {hadithQuote.arabic}
+                    </p>
+                    <p className="hadith-translation">
+                      {hadithQuote.translation}
+                    </p>
+                    <small className="hadith-source">{hadithQuote.source}</small>
                   </div>
                   <div className="couple-grid">
                     <PersonCard

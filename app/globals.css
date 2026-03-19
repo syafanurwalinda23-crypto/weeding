@@ -485,6 +485,35 @@ body.invitation-open .meta-pill {
   line-height: 1.75;
 }
 
+.hadith-card {
+  margin-top: 18px;
+  padding: 20px 18px;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  text-align: center;
+}
+
+.hadith-arabic {
+  margin: 0;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  line-height: 1.9;
+  color: var(--brand-strong);
+}
+
+.hadith-translation {
+  margin: 12px 0 6px;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.hadith-source {
+  display: block;
+  color: var(--text-faint);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .couple-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 20px;
