@@ -46,7 +46,7 @@ const events = [
   },
   {
     label: "Resepsi",
-    time: "11.00 WIB - 15.00 WIB",
+    time: "11.00 WIB - selesai",
     date: weddingDetails.dateLabel,
   },
 ];
