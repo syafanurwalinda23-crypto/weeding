@@ -9,7 +9,7 @@ import { useMusicPlayer } from "./app-shell";
 const weddingDate = "2026-04-12T08:00:00+07:00";
 
 const weddingDetails = {
-  groom: "Uut kusfendi ",
+  groom: "Uut Kusfendi ",
   bride: "Nabila Avira Fitri",
   brideLines: ["Nabila", "Avira Fitri"],
   dateLabel: "Minggu, 12 April 2026",
@@ -536,7 +536,7 @@ export default function InvitationClient({ mode = "invite" }) {
                     />
                     <PersonCard
                       name={weddingDetails.bride}
-                      role="Putri kedua"
+                      role="Putri Pertama"
                       parents={["Bapak Alm. Mulyono", "Ibu Eny Kismiastuti"]}
                     />
                   </div>
