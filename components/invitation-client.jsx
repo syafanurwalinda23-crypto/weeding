@@ -54,7 +54,7 @@ const events = [
 const bankAccounts = [
   {
     bank: "BCA",
-    number: "1234567890",
+    number: "6900583051",
     name: "Nabila Avira Fitri",
   },
 ];
