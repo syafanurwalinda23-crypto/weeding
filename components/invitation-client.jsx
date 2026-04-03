@@ -223,6 +223,25 @@ export default function InvitationClient({ mode = "invite" }) {
   }, [mode]);
 
   useEffect(() => {
+    if (mode !== "invite" || musicEnabled) {
+      return;
+    }
+
+    const tryStartMusic = () => {
+      void startMusic();
+    };
+
+    tryStartMusic();
+    window.addEventListener("pointerdown", tryStartMusic, { passive: true });
+    window.addEventListener("keydown", tryStartMusic);
+
+    return () => {
+      window.removeEventListener("pointerdown", tryStartMusic);
+      window.removeEventListener("keydown", tryStartMusic);
+    };
+  }, [mode, musicEnabled, startMusic]);
+
+  useEffect(() => {
     if (mode !== "invite") {
       return;
     }

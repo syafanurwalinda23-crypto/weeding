@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useRef, useState } from "react";
 
 const MusicPlayerContext = createContext(null);
 
@@ -8,7 +8,7 @@ export function AppShell({ children }) {
   const audioRef = useRef(null);
   const [musicEnabled, setMusicEnabled] = useState(false);
 
-  const startMusic = async () => {
+  const startMusic = useCallback(async () => {
     const player = audioRef.current;
     if (!player) {
       return false;
@@ -22,9 +22,9 @@ export function AppShell({ children }) {
       setMusicEnabled(false);
       return false;
     }
-  };
+  }, []);
 
-  const toggleMusic = async () => {
+  const toggleMusic = useCallback(async () => {
     const player = audioRef.current;
     if (!player) {
       return;
@@ -37,12 +37,19 @@ export function AppShell({ children }) {
     }
 
     await startMusic();
-  };
+  }, [musicEnabled, startMusic]);
 
   return (
     <MusicPlayerContext.Provider value={{ musicEnabled, startMusic, toggleMusic }}>
       {children}
-      <audio ref={audioRef} src="/audio/cundamani-violin-cut.mp3" loop preload="auto" />
+      <audio
+        ref={audioRef}
+        src="/audio/cundamani-violin-cut.mp3"
+        loop
+        preload="auto"
+        autoPlay
+        playsInline
+      />
     </MusicPlayerContext.Provider>
   );
 }
